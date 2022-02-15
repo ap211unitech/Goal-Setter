@@ -1,8 +1,14 @@
+// Environmental Variables
 require('dotenv').config();
+
+// Database Connection
+const { dbConnect } = require("./config/connect");
+dbConnect();
 
 const express = require('express');
 const app = express();
 
+// Custom Error Handler
 const { errHandler } = require('./middleware/errorMiddleware')
 
 app.use(express.json())

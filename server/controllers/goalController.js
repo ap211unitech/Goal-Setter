@@ -1,4 +1,6 @@
-const asyncHandler = require('express-async-handler')
+const asyncHandler = require('express-async-handler');
+
+const Goal = require('../models/Goal');
 
 // @Desc    Get All Goals
 // @Route   GET /api/goals
