@@ -6,7 +6,8 @@ const Goal = require('../models/Goal');
 // @Route   GET /api/goals
 // @Access  Private
 const getGoals = asyncHandler(async (req, res) => {
-    res.status(200).json({ msg: 'Get Goals' });
+    const goals = await Goal.find();
+    res.status(200).json(goals);
 })
 
 // @Desc    Create New Goal
@@ -17,14 +18,26 @@ const createGoal = asyncHandler(async (req, res) => {
         res.status(400)
         throw new Error('Please add a goal');
     }
-    res.status(201).json({ msg: req.body });
+    const goal = new Goal({ text: req.body.text });
+    await goal.save();
+    res.status(201).json(goal);
 })
 
 // @Desc    Update Goal
 // @Route   PUT /api/goals
 // @Access  Private
 const updateGoal = asyncHandler(async (req, res) => {
-    res.status(200).json({ msg: `Update Goal ${req.params.id}` });
+    if (!req.body || !req.body.text) {
+        res.status(400)
+        throw new Error('Please add a goal');
+    }
+    const findGoal = await Goal.findById(req.params.id);
+    if (!findGoal) {
+        res.status(400)
+        throw new Error('Goal Not found');
+    }
+    const goal = await Goal.findByIdAndUpdate(req.params.id, { text: req.body.text }, { new: true })
+    res.status(200).json(goal);
 })
 
 
@@ -32,7 +45,13 @@ const updateGoal = asyncHandler(async (req, res) => {
 // @Route   DELETE /api/goals
 // @Access  Private
 const deleteGoal = asyncHandler(async (req, res) => {
-    res.status(200).json({ msg: `Delete Goal ${req.params.id}` });
+    const findGoal = await Goal.findById(req.params.id);
+    if (!findGoal) {
+        res.status(400)
+        throw new Error('Goal Not found');
+    }
+    await Goal.findOneAndDelete({ _id: req.params.id });
+    res.status(200).json({ id: req.params.id, msg: 'Goal Deleted' });
 })
 
 module.exports = {
