@@ -57,7 +57,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
     if (!userExists) {
         res.status(400);
-        throw new Error('No such User exists');
+        throw new Error('No such user exists');
     }
 
     // Match Password
