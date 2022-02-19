@@ -1,4 +1,3 @@
-import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FaUser, FaSignInAlt, FaSignOutAlt } from 'react-icons/fa';
 import { useSelector, useDispatch } from 'react-redux';
