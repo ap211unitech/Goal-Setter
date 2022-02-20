@@ -31,6 +31,17 @@ export const createGoal = createAsyncThunk('/goals/create', async (text, thunkAp
     }
 })
 
+// Update a Goal
+export const updateGoal = createAsyncThunk('/goals/update', async ({ text, id }, thunkApi) => {
+    try {
+        const token = thunkApi.getState().auth.user.token;
+        return await goalService.updateGoal(token, text, id);
+    } catch (err) {
+        const message = (err.response && err.response.data && err.response.data.message) || err.message || err.toString();
+        return thunkApi.rejectWithValue(message);
+    }
+})
+
 // Delete a Goal
 export const deleteGoal = createAsyncThunk('/goals/delete', async (id, thunkApi) => {
     try {
@@ -46,15 +57,7 @@ export const deleteGoal = createAsyncThunk('/goals/delete', async (id, thunkApi)
 export const goalSlice = createSlice({
     name: 'goal',
     initialState,
-    reducers: {
-        reset: (state) => {
-            state.goals = []
-            state.isError = false
-            state.isLoading = false
-            state.isSuccess = false
-            state.message = ''
-        }
-    },
+    reducers: {},
     extraReducers: (builder) => {
         builder
             .addCase(getGoals.pending, (state, action) => {
@@ -88,6 +91,22 @@ export const goalSlice = createSlice({
                 state.message = action.payload
                 state.isSuccess = false
             })
+            .addCase(updateGoal.pending, (state, action) => {
+                state.isLoading = true
+            })
+            .addCase(updateGoal.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isError = false
+                state.message = ''
+                state.isSuccess = true
+                state.goals = state.goals.map(goal => goal._id.toString() == action.payload._id.toString() ? action.payload : goal);
+            })
+            .addCase(updateGoal.rejected, (state, action) => {
+                state.isLoading = false
+                state.isError = true
+                state.message = action.payload
+                state.isSuccess = false
+            })
             .addCase(deleteGoal.pending, (state, action) => {
                 state.isLoading = true
             })
@@ -107,5 +126,5 @@ export const goalSlice = createSlice({
     }
 })
 
-export const { reset } = goalSlice.actions;
+// export const { reset } = goalSlice.actions;
 export default goalSlice.reducer;

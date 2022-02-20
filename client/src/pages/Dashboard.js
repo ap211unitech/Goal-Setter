@@ -12,7 +12,7 @@ function Dashboard() {
     const dispatch = useDispatch();
 
     const { user } = useSelector(state => state.auth);
-    const { goals, isLoading, isError, message, isSuccess } = useSelector(state => state.goals);
+    const { goals, isLoading, isError, message } = useSelector(state => state.goals);
 
     useEffect(() => {
 
@@ -26,7 +26,7 @@ function Dashboard() {
 
         dispatch(getGoals());
 
-    }, [user, isSuccess, isError, message, navigate, dispatch])
+    }, [user, isError, message, navigate, dispatch])
 
 
     if (isLoading) {
@@ -36,7 +36,7 @@ function Dashboard() {
     return (
         <Fragment>
             <section className='heading'>
-                <h1>Welcome {user && user.name}</h1>
+                <h1>Welcome {user && user.name.split(' ')[0]}</h1>
                 <p>Goals Dashboard</p>
             </section>
 

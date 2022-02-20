@@ -3,23 +3,33 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import { FaEdit } from 'react-icons/fa';
+import { updateGoal } from '../features/goals/goalSlice';
 
-function UpdateGoal(props) {
+function UpdateGoal() {
 
     const location = useLocation();
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { user } = useSelector(state => state.auth);
+    const { isError, message, isSuccess } = useSelector(state => state.goals);
 
     const [text, setText] = useState((location && location.state) ? location.state.text : '');
 
     useEffect(() => {
 
+        if (!location.state) {
+            navigate('/');
+        }
+
         if (!user) {
             navigate('/login');
         }
 
-    }, [user])
+        if (isError) {
+            toast.error(message);
+        }
+
+    }, [user, isSuccess, isError, message, navigate, dispatch])
 
     const onSubmit = (e) => {
         e.preventDefault()
@@ -28,7 +38,7 @@ function UpdateGoal(props) {
             toast.error('Goal can not be empty');
         }
         else {
-            // dispatch(createGoal(text))
+            dispatch(updateGoal({ text, id: location.state.id }))
             setText('');
             navigate('/');
             toast.success('Goal Updated');

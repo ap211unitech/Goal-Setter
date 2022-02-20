@@ -28,7 +28,7 @@ function Login() {
             navigate('/');
         }
 
-        dispatch(reset());
+        // dispatch(reset());
 
     }, [user, isSuccess, isError, message, dispatch, navigate])
 
