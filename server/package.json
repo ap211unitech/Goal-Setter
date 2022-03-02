@@ -5,10 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "server": "nodemon server.js",
-    "client": "cd.. && cd client && npm start",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install ../client && npm run build ../client"
+    "server": "nodemon server.js"
   },
   "author": "Arjun Porwal",
   "license": "ISC",
