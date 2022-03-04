@@ -5,6 +5,7 @@ import Spinner from '../components/Spinner';
 import { getGoals } from "../features/goals/goalSlice";
 import GoalItem from '../components/GoalItem';
 import GoalForm from '../components/GoalForm';
+import { toast } from 'react-toastify';
 
 function Dashboard() {
 
@@ -17,14 +18,16 @@ function Dashboard() {
     useEffect(() => {
 
         if (isError) {
+            toast.error(message);
             console.log(message);
         }
 
-        if (!user) {
+        if (!user || !user.token) {
             navigate('/login');
         }
-
-        dispatch(getGoals());
+        else {
+            dispatch(getGoals());
+        }
 
     }, [user, isError, message, navigate, dispatch])
 

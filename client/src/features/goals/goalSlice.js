@@ -62,6 +62,8 @@ export const goalSlice = createSlice({
         builder
             .addCase(getGoals.pending, (state, action) => {
                 state.isLoading = true
+                state.isError = false
+                state.isSuccess = false
             })
             .addCase(getGoals.fulfilled, (state, action) => {
                 state.isLoading = false
@@ -78,6 +80,8 @@ export const goalSlice = createSlice({
             })
             .addCase(createGoal.pending, (state, action) => {
                 state.isLoading = true
+                state.isError = false
+                state.isSuccess = false
             })
             .addCase(createGoal.fulfilled, (state, action) => {
                 state.isLoading = false
@@ -94,6 +98,8 @@ export const goalSlice = createSlice({
             })
             .addCase(updateGoal.pending, (state, action) => {
                 state.isLoading = true
+                state.isError = false
+                state.isSuccess = false
             })
             .addCase(updateGoal.fulfilled, (state, action) => {
                 state.isLoading = false
@@ -110,6 +116,8 @@ export const goalSlice = createSlice({
             })
             .addCase(deleteGoal.pending, (state, action) => {
                 state.isLoading = true
+                state.isError = false
+                state.isSuccess = false
             })
             .addCase(deleteGoal.fulfilled, (state, action) => {
                 state.isLoading = false

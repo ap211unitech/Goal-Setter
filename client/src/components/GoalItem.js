@@ -7,8 +7,8 @@ import { toast } from 'react-toastify';
 function GoalItem({ goal }) {
     const dispatch = useDispatch();
 
-    const onDelete = () => {
-        dispatch(deleteGoal(goal._id))
+    const onDelete = async () => {
+        await dispatch(deleteGoal(goal._id))
         toast.success('Goal Deleted');
     }
 

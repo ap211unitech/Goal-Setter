@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import { FaEdit } from 'react-icons/fa';
 import { updateGoal } from '../features/goals/goalSlice';
+import Spinner from '../components/Spinner';
 
 function UpdateGoal() {
 
@@ -11,7 +12,7 @@ function UpdateGoal() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { user } = useSelector(state => state.auth);
-    const { isError, message, isSuccess } = useSelector(state => state.goals);
+    const { isError, message, isSuccess, isLoading } = useSelector(state => state.goals);
 
     const [text, setText] = useState((location && location.state) ? location.state.text : '');
 
@@ -21,7 +22,7 @@ function UpdateGoal() {
             navigate('/');
         }
 
-        if (!user) {
+        if (!user || !user.token) {
             navigate('/login');
         }
 
@@ -31,20 +32,19 @@ function UpdateGoal() {
 
     }, [user, isSuccess, isError, message, navigate, dispatch])
 
-    const onSubmit = (e) => {
+    const onSubmit = async (e) => {
         e.preventDefault()
 
-        if (text.trim().length == 0) {
+        if (text.trim().length === 0) {
             toast.error('Goal can not be empty');
         }
         else {
-            dispatch(updateGoal({ text, id: location.state.id }))
+            await dispatch(updateGoal({ text, id: location.state.id }));
             setText('');
             navigate('/');
             toast.success('Goal Updated');
         }
     }
-
 
     return (
         <Fragment>
@@ -53,25 +53,28 @@ function UpdateGoal() {
                     <FaEdit /> Edit Goal
                 </h1>
             </section>
-            <section className='form'>
-                <form onSubmit={onSubmit}>
-                    <div className='form-group'>
-                        <label htmlFor='text'>Goal</label>
-                        <input
-                            type='text'
-                            name='text'
-                            id='text'
-                            value={text}
-                            onChange={(e) => setText(e.target.value)}
-                        />
-                    </div>
-                    <div className='form-group'>
-                        <button className='btn btn-block' type='submit'>
-                            Edit Goal
-                        </button>
-                    </div>
-                </form>
-            </section>
+            {isLoading ?
+                <Spinner /> :
+                <section className='form'>
+                    <form onSubmit={onSubmit}>
+                        <div className='form-group'>
+                            <label htmlFor='text'>Goal</label>
+                            <input
+                                type='text'
+                                name='text'
+                                id='text'
+                                value={text}
+                                onChange={(e) => setText(e.target.value)}
+                            />
+                        </div>
+                        <div className='form-group'>
+                            <button className='btn btn-block' type='submit'>
+                                Edit Goal
+                            </button>
+                        </div>
+                    </form>
+                </section>
+            }
         </Fragment>
     )
 }
