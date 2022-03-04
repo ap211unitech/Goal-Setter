@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const URL = 'api/users';
+const URL = 'https://goalsetter-mern.herokuapp.com/api/users';
 
 // Register User
 const register = async (user) => {

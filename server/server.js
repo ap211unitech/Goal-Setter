@@ -7,6 +7,7 @@ dbConnect();
 
 const express = require('express');
 const app = express();
+const cors = require("cors");
 // const path = require('path');
 
 // Custom Error Handler
@@ -14,6 +15,12 @@ const { errHandler } = require('./middleware/errorMiddleware')
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+
+// var corsOptions = {
+//     origin: 'http://localhost:3000',
+//     optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+// }
+app.use(cors());
 
 // Routes
 app.use('/api/goals', require('./routes/goalRoutes'));

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const URL = 'api/goals';
+const URL = 'https://goalsetter-mern.herokuapp.com/api/goals';
 
 const getGoals = async (token) => {
     const config = {
